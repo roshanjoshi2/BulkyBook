@@ -1,0 +1,12 @@
+﻿@model Category
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    <form method="post" asp-action="Delete">
+        <h1> are you sure want to delete???</h1>
+
+        <button type="submit" class=" btn btn-danger" asp-controller="Category" asp-action="Delete"> Delete</button>
+    </form>
+}

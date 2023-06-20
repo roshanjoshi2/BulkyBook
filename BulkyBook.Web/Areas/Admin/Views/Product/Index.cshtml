@@ -1,0 +1,26 @@
+﻿@*@model IEnumerable<CoverType>
+@{
+    ViewData["Title"] = "Index";
+
+}*@
+
+
+<h1>Index</h1>
+<div class="col-6 text-end mb-3">
+    <a asp-controller="product" asp-action="Upsert" class="btn btn-primary">Create new Product</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead> 
+        <tr>
+            <th>Title </th>
+            <th>ISBN </th>
+            <th>Price </th>
+            <th>Author </th>
+            <th>Category</th>
+
+        </tr>
+    </thead>
+    
+
+</table>
