@@ -10,7 +10,7 @@
     <a asp-controller="product" asp-action="Upsert" class="btn btn-primary">Create new Product</a>
 </div>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" id="tblData">
     <thead> 
         <tr>
             <th>Title </th>
@@ -18,9 +18,16 @@
             <th>Price </th>
             <th>Author </th>
             <th>Category</th>
+            <th>coverType</th>
+           
+            <th>Action</th>
+            
 
         </tr>
     </thead>
     
 
 </table>
+@section Scripts{
+    <script src="~/js/Products.js"></script>
+}

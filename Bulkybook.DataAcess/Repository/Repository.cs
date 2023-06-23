@@ -17,23 +17,39 @@ namespace Bulkybook.DataAcess.Repository
         public Repository( ApplicationDbContext db)
         {
             _db = db;
+            _db.Products.Include(u => u.Category).Include(u=>u.CoverType);
+           
             this.dbSet = _db.Set<T>();
         }
         void IRepository<T>.Add(T entity)
         {
             dbSet.Add(entity);  
         }
-
-        IEnumerable<T> IRepository<T>.GetAll()
+        //incluedprop =
+        IEnumerable<T> IRepository<T>.GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if(includeProperties != null)
+            {
+                foreach(var includeprop in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeprop);
+                }
+            }
             return query.ToList();  
         }
 
-        T IRepository<T>.GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        T IRepository<T>.GetFirstOrDefault(Expression<Func<T, bool>> filter , string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
+            if (includeProperties != null)
+            {
+                foreach (var includeprop in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeprop);
+                }
+            }
             return query.FirstOrDefault();
         }
 

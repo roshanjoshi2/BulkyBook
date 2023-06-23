@@ -4,11 +4,12 @@
 
 
 <form method="post"  asp-action="Upsert" enctype="multipart/form-data">
+    
    
    
     <div class="border  p-3 mt-4 row" >
         <div class="row pb-2">
-            <h2 class=" text-primary">Create CoverType</h2>
+            <h2 class="text-primary">@(Model.Product.Id != 0 ? "Update" : "create") Product</h2>
             <hr />
         </div>
     
@@ -50,32 +51,38 @@
         
         <div class=" mb-3">
             <label asp-for="Product.ImageUrl"></label>
-            <input type="file" class="form-control" />
+            <input type="file" id="uploadBox" name="file" class="form-control" />
         </div>
         
 
 
 
         <div class=" mb-3 col-6">
-            <label asp-for="Product.CoverType"></label>
-            <select asp-for="Product.CoverType" asp-items="@Model.CoverType" class="form-control">
+            <label asp-for="Product.CoverTypeId"></label>
+            <select asp-for="Product.CoverTypeId" asp-items="@Model.CoverType" class="form-control">
                 <option disabled selected>--selectCovertype--</option>>
             </select>
             <span asp-validation-for="Product.CoverType" class=" text-danger"></span>
         </div>
         <div class=" mb-3 col-6">
-            <label asp-for="Product.Category"></label>
-            <select asp-for="Product.Category" asp-items="@Model.CategoryList" class="form-control">
+            <label asp-for="Product.CategoryId"></label>
+            <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-control">
                 <option disabled selected>--selectcategory--</option>>
             </select>
-            <span asp-validation-for="Product.CoverType" class=" text-danger"></span>
+            <span asp-validation-for="Product.CategoryId" class=" text-danger"></span>
         </div>
         
         
        
        <div class="col-12">
+           @if(Model.Product.Id != 0){
+                       <button type="submit" class=" btn btn-primary pl-4" style="width:150px"> Update</button>
 
-        <button type="submit" class=" btn btn-primary pl-4" style="width:150px"> Update</button>
+           }
+           else{
+                <button type="submit" onclick="return ValidateInput()" class=" btn btn-primary pl-4" style="width:150px"> Create</button>
+
+           }
         <a asp-controller="CoverType" asp-action="Index" class=" btn btn-secondary" style="width:150px">Back To list </a>
         </div>
     </div>
@@ -83,6 +90,20 @@
 </form>
 @section Scripts{
     @{
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     }
+    <script>
+        function ValidateInput(){
+            if(document.getElementById("uploadBox").value==""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
+                return false;
+            }
+            return true;    
+        }
+    </script>
 }

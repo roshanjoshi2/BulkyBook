@@ -77,9 +77,6 @@ namespace Bulkybook.DataAcess.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategotyId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CoverTypeId")
                         .HasColumnType("int");
 
@@ -109,7 +106,7 @@ namespace Bulkybook.DataAcess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategotyId");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CoverTypeId");
 
@@ -120,7 +117,7 @@ namespace Bulkybook.DataAcess.Migrations
                 {
                     b.HasOne("BulkyBook.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategotyId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

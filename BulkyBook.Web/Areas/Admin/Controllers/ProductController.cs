@@ -15,14 +15,16 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _hostEnvironment = hostEnvironment;
         }
         public IActionResult Index()
         {
-            IEnumerable<CoverType> CoverType = _unitOfWork.CoverType.GetAll();
-            return View(CoverType);
+           
+            return View();
         }
 
 
@@ -49,23 +51,6 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
 
             };
 
-
-
-
-            //IEnumerable<SelectListItem> CategotyList = _unitOfWork.Category.GetAll().Select(
-            //    u => new SelectListItem
-            //    {
-            //        Text = u.Name,
-            //        Value = u.Id.ToString()
-            //    });
-
-            //IEnumerable<SelectListItem> CoverType = _unitOfWork.CoverType.GetAll().Select(
-            //   u => new SelectListItem
-            //   {
-            //       Text = u.Name,
-            //       Value = u.Id.ToString()
-            //   });
-
             if (id == null || id == 0)
             {
 
@@ -73,20 +58,61 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             }
             else
             {
+                var data = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id.Value);
+                productVM.Product = data;
                 return View(productVM);
 
+
             }
+            
 
 
         }
         //Post
         [HttpPost]
-        public IActionResult Upsert( Product obj, IFormFile file)
+        public IActionResult Upsert( ProductVM obj, IFormFile file)
         {
-           // _unitOfWork.CoverType.Update(coverType);
-           _unitOfWork.Save();
-           TempData["Sucess"] = "CoverType Edited sucessfully";
-           // return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                if(file != null)
+                {
+                    string filename = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"Images\Products");
+                    var extension = Path.GetExtension(file.FileName);
+
+
+                    if(obj.Product.ImageUrl != null)
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                       
+                    }
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, filename + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+                    obj.Product.ImageUrl = @"Images\Products\" + filename + extension;
+                }
+                if(obj.Product.Id != 0)
+                {
+                    _unitOfWork.Product.Update(obj.Product);
+                  
+                }
+                else
+                {
+                    _unitOfWork.Product.Add(obj.Product);
+                }
+                //_unitOfWork.Product.Add(obj.Product);
+                _unitOfWork.Save();
+                TempData["Sucess"] = "product  Edited sucessfully";
+                return RedirectToAction("Index");
+
+            }
+            
             return View(obj);
         }
 
@@ -109,6 +135,16 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
 
         }
+
+        #region API CAlLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
+            return Json(new { data = productList });
+        }
+
+        #endregion
 
     }
 }
