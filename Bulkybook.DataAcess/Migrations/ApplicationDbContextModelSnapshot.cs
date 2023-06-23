@@ -80,6 +80,10 @@ namespace Bulkybook.DataAcess.Migrations
                     b.Property<int>("CoverTypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ISBN")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

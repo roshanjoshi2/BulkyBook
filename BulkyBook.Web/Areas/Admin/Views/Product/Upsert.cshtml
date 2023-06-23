@@ -1,24 +1,29 @@
 ﻿@model BulkyBook.Models.ViewModel.ProductVM
 
 
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+
+    <div>
+        <input asp-for="Product.Id" hidden />
+        <input asp-for="Product.ImageUrl" hidden />
+    </div>
 
 
-<form method="post"  asp-action="Upsert" enctype="multipart/form-data">
-    
-   
-   
-    <div class="border  p-3 mt-4 row" >
+
+
+    <div class="border  p-3 mt-4 row">
         <div class="row pb-2">
             <h2 class="text-primary">@(Model.Product.Id != 0 ? "Update" : "create") Product</h2>
             <hr />
         </div>
-    
-        <div class=" mb-3">
+
+
+        <div class=" mb-3 col-12">
             <label asp-for="Product.Name"></label>
             <input asp-for="Product.Name" class="form-control" />
             <span asp-validation-for="Product.Name" class=" text-danger"></span>
         </div>
-        <div class=" mb-3 col-6" >
+        <div class=" mb-3 col-6">
             <label asp-for="Product.ISBN"></label>
             <input asp-for="Product.ISBN" class="form-control" />
             <span asp-validation-for="Product.ISBN" class=" text-danger"></span>
@@ -27,6 +32,11 @@
             <label asp-for="Product.Author"></label>
             <input asp-for="Product.Author" class="form-control" />
             <span asp-validation-for="Product.Author" class=" text-danger"></span>
+        </div>
+        <div class=" mb-3 col-6">
+            <label asp-for="Product.Description"></label>
+            <textarea row-3 asp-for="Product.Description" class="form-control"></textarea>
+            <span asp-validation-for="Product.Description" class=" text-danger"></span>
         </div>
         <div class=" mb-3 col-6">
             <label asp-for="Product.ListPrice"></label>
@@ -48,15 +58,6 @@
             <input asp-for="Product.Price100" class="form-control" />
             <span asp-validation-for="Product.Price100" class=" text-danger"></span>
         </div>
-        
-        <div class=" mb-3">
-            <label asp-for="Product.ImageUrl"></label>
-            <input type="file" id="uploadBox" name="file" class="form-control" />
-        </div>
-        
-
-
-
         <div class=" mb-3 col-6">
             <label asp-for="Product.CoverTypeId"></label>
             <select asp-for="Product.CoverTypeId" asp-items="@Model.CoverType" class="form-control">
@@ -71,30 +72,53 @@
             </select>
             <span asp-validation-for="Product.CategoryId" class=" text-danger"></span>
         </div>
-        
-        
-       
-       <div class="col-12">
-           @if(Model.Product.Id != 0){
-                       <button type="submit" class=" btn btn-primary pl-4" style="width:150px"> Update</button>
 
-           }
-           else{
+        <div class=" mb-3 col-6">
+            <label asp-for="Product.ImageUrl"></label>
+            <input type="file" id="uploadBox" name="file" class="form-control" />
+        </div>
+        <div class="  col-6">
+
+            <img src="@Model.Product.ImageUrl" broder-radius: 30%;style="width=" 100" height="100" />
+        </div>
+
+
+
+        <div class="col-12">
+            @if (Model.Product.Id != 0)
+            {
+                <button type="submit" class=" btn btn-primary pl-4" style="width:150px"> Update</button>
+
+            }
+            else
+            {
                 <button type="submit" onclick="return ValidateInput()" class=" btn btn-primary pl-4" style="width:150px"> Create</button>
 
-           }
-        <a asp-controller="CoverType" asp-action="Index" class=" btn btn-secondary" style="width:150px">Back To list </a>
+            }
+            <a asp-controller="Product" asp-action="Index" class=" btn btn-secondary" style="width:150px">Back To list </a>
         </div>
     </div>
-
 </form>
 @section Scripts{
     @{
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
     }
     <script>
-        function ValidateInput(){
-            if(document.getElementById("uploadBox").value==""){
+
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ]
+        });
+
+        function ValidateInput() {
+            if (document.getElementById("uploadBox").value == "") {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -103,7 +127,9 @@
                 });
                 return false;
             }
-            return true;    
+            return true;
         }
     </script>
+
+
 }

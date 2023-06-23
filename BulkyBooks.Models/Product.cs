@@ -18,6 +18,8 @@ namespace BulkyBook.Models
         public string ISBN { get; set; }
         [Required]
         public string Author { get; set; }
+       
+        public string Description { get; set; }
         [Required]
         [Range(1, 1000)]
         public double ListPrice { get; set; }
