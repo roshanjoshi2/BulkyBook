@@ -7,6 +7,7 @@ using Bulkybook.DataAcess.Repository.IRepository;
 using BulkyBook.DataAcess;
 using BulkyBook.Models;
 using BulkyBook.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -28,7 +29,7 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
         }
 
 
-
+        [Authorize]
         //GET
         public IActionResult Upsert(int? id)
         {

@@ -1,5 +1,6 @@
 ﻿using Bulkybook.DataAcess.Repository.IRepository;
 using BulkyBook.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -16,7 +17,7 @@ namespace BulkyBook.Web.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
+     
         public IActionResult Index()
         {
             IEnumerable<Product> produtList = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");

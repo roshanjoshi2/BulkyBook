@@ -1,7 +1,7 @@
 using Bulkybook.DataAcess.Repository;
 using Bulkybook.DataAcess.Repository.IRepository;
 using BulkyBook.DataAcess;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +12,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.Cookie.Name = "MySessionCookie";
+                   options.LoginPath = "/Admin/Login/PerformLogin";
+                   options.SlidingExpiration = true;
+               });
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
+builder.Services.AddControllers();
 
 
 
@@ -29,12 +43,27 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+var cookiePolicyOptions = new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+    HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.None,
+};
+app.UseCookiePolicy(cookiePolicyOptions);
+
 app.UseAuthentication();
 
 app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
+    //endpoints.MapControllerRoute(
+    //    name: "default",
+    //    pattern: "{area=Admin}/{controller=Login}/{action=Index}/{id?}");
+});
 
 app.Run();

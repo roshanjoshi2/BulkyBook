@@ -17,6 +17,7 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        
         public IActionResult Index()
         {
             IEnumerable<Category> categorylist = _unitOfWork.Category.GetAll();
