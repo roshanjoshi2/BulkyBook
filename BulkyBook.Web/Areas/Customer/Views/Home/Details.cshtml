@@ -1,0 +1,32 @@
+﻿@model ShoppingCart
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="~/css/Details.css"/>
+
+    
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="project-info-box mt-0">
+                
+               
+            </div><!-- / project-info-box -->
+
+            <div class="project-info-box">
+                <p><b>Name:</b> @Model.Product.Name</p>
+                <p><b>Author:</b> @Model.Product.Author</p>
+                <p><b>List Price:</b> @Model.Product.ListPrice</p>
+                <p><b>Price of 100:</b> @Model.Product.Price100</p>
+                <p class="mb-0"><b>Budget:</b> $500</p>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <img src="@Model.Product.ImageUrl" alt="project-image" class="rounded">
+            <div class="project-info-box">
+                <p><b>Categories:</b>@Model.Product.Category.Name</p>
+                <p><b>Cover Type</b> @Model.Product.CoverType.Name</p>
+            </div><!-- / project-info-box -->
+        </div><!-- / column -->
+    </div>
+</div>
+
