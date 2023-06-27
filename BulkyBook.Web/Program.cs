@@ -8,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+
+options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -18,6 +20,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                    options.Cookie.Name = "MySessionCookie";
                    options.LoginPath = "/Admin/Login/PerformLogin";
                    options.SlidingExpiration = true;
+                   options.ExpireTimeSpan = TimeSpan.FromHours(1);
                });
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
@@ -61,9 +64,7 @@ app.UseEndpoints(endpoints =>
         pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 
-    //endpoints.MapControllerRoute(
-    //    name: "default",
-    //    pattern: "{area=Admin}/{controller=Login}/{action=Index}/{id?}");
+   
 });
 
 app.Run();

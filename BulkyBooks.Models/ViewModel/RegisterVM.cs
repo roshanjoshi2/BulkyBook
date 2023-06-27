@@ -1,19 +1,22 @@
 ﻿using BulkyBook.Web.Enum;
+using Microsoft.AspNetCore.Builder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace BulkyBook.Models
+namespace BulkyBook.Models.ViewModel
 {
-    public class Register
+    public class RegisterVM
     {
-        public Role role { get; set; }
-        public int Id { get; set; }
+       
+
+      
         public string Username { get; set; }
-        public string Email { get; set; }
+       
         public string Password { get; set; }
-        public string ContactNumber { get; set; }
+
+       
+
     }
 }

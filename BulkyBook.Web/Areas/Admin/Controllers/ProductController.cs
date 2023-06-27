@@ -22,6 +22,7 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
+        [Authorize]
         public IActionResult Index()
         {
            

@@ -10,5 +10,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BulkyBooks.Utility\BulkyBook.Utility.csproj" />
+  </ItemGroup>
+
 
 </Project>
