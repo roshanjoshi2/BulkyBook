@@ -22,12 +22,30 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
+        public IActionResult GenerateFile()
+        {
+            // Retrieve the Excel file as a byte array
+            var excelData = GenerateExcelFile();
+
+            // Set the response headers for downloading the file
+            Response.Headers.Add("Content-Disposition", "attachment; filename=products.xlsx");
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.ContentLength = excelData.Length;
+
+            // Write the Excel byte array directly to the response
+            return File(excelData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
         [Authorize]
+        //public IActionResult Index()
+        //{
+           
+        //    return View();
+        //}
         public IActionResult Index()
         {
-           
             return View();
         }
+
 
 
         [Authorize]
@@ -162,6 +180,38 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");   
 
         }
+        private byte[] GenerateExcelFile()
+        {
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
+
+            using (var package = new OfficeOpenXml.ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Products");
+
+                // Set header row
+                var headers = new string[] { "Name", "Description", "Price", "Category", "Cover Type" };
+                for (var i = 0; i < headers.Length; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = headers[i];
+                }
+
+                // Set data rows
+                var row = 2;
+                foreach (var product in productList)
+                {
+                    worksheet.Cells[row, 1].Value = product.Name;
+                    worksheet.Cells[row, 2].Value = product.Description;
+                    worksheet.Cells[row, 3].Value = product.Price;
+                    worksheet.Cells[row, 4].Value = product.Category.Name;
+                    worksheet.Cells[row, 5].Value = product.CoverType.Name;
+                    row++;
+                }
+
+                return package.GetAsByteArray();
+            }
+        }
+
+
 
         #endregion
 

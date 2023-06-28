@@ -23,7 +23,7 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                    @* <ul class="navbar-nav me-auto">*@
 
-                        @if(User.Identity.IsAuthenticated && User.Claims.Any(X=>X.Value =="admin"))
+                    @if (User.Identity.IsAuthenticated  @*User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "admin")*@)
                         {
                              <ul class="navbar-nav me-auto">
                            

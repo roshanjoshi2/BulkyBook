@@ -3,6 +3,7 @@ using Bulkybook.DataAcess.Repository.IRepository;
 using BulkyBook.DataAcess;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
            .AllowAnyMethod()
            .AllowAnyHeader();
 }));
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
 builder.Services.AddControllers();
 
 
