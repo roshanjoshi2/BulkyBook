@@ -9,6 +9,7 @@ using Bulkybook.DataAcess.Repository;
 using NuGet.Versioning;
 using BulkyBook.Models;
 using Bulkybook.DataAcess.Repository.IRepository;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BulkyBook.Web.Areas.Admin.Controllers
 {
@@ -65,7 +66,8 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
 
         public IActionResult Register()
         {
-            return View("Regis");
+
+            return View("Regis", new Register { role = Enum.Role.admin});
         }
         [HttpPost]
         public IActionResult Register(Register register)
@@ -76,17 +78,17 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             return RedirectToAction("PerformLogin", "Register");
 
         }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("PerformLogin","Register");
+        }
 
 
 
     }
 
-    //public IActionResult Logout()
-    //{
-    //    HttpContext.SignOutAsync(
-    //       CookieAuthenticationDefaults.AuthenticationScheme);
-
-    //}
+   
 
 
 }

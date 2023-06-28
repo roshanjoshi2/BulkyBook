@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyBook.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -18,19 +19,20 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        [Authorize]
+        
         public IActionResult Index()
         {
             IEnumerable<Category> categorylist = _unitOfWork.Category.GetAll();
             return View(categorylist);
         }
-        [Authorize]
+        [Authorize(Roles = "admin")]
         //GET
         public IActionResult Create()
         {
             return View();
         }
         //POST
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Create(Category category)
         {
@@ -47,7 +49,7 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             return View(category);
 
         }
-        [Authorize]
+       
         //GET
         public IActionResult Edit(int? id)
         {
@@ -73,7 +75,7 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        
         //get
         public IActionResult Delete(int id)
         {

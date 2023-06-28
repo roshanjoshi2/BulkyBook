@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -38,37 +39,49 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav me-auto">
+                   @* <ul class="navbar-nav me-auto">*@
 
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                             <ul class="navbar-nav me-auto">
+                           
 
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="category" asp-action="Index">Category</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="CoverType" asp-action="Index">CoverType</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="product" asp-action="Index">product</a>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="Admin" asp-action="Create" asp-controller="Category">Create</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-action="Create" asp-controller="CoverType">CoverType</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-action="Upsert" asp-controller="product">Product</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Separated link</a>
+                                </div>
+                            </li>
+                            </ul>
+                        }
+                        else
+                        {
+                         <ul>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="category" asp-action="Index">Category</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="CoverType" asp-action="Index">CoverType</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="product" asp-action="Index">product</a>
-                        </li>
+                            </li>
+                        </ul>
+                        }
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-area="Admin" asp-action="Create" asp-controller="Category">Create</a>
-                                <a class="dropdown-item" asp-area="Admin" asp-action="Create" asp-controller="CoverType">CoverType</a>
-                                <a class="dropdown-item" asp-area="Admin" asp-action="Upsert" asp-controller="product">Product</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>
-                            </div>
-                        </li>
-                    </ul>
-                   
-                 
 
 
                     <form class="d-flex">
@@ -76,7 +89,7 @@
                       
                         @if(User.Identity!=null && User.Identity.IsAuthenticated)
                         {
-                            <button class="btn btn-secondary my-2 my-sm-0" asp-area="Admin" asp-action="Logout" asp-controller="Login">Logout</button>
+                            <button class="btn btn-secondary my-2 my-sm-0" asp-area="Admin" asp-action="Logout" asp-controller="Register">Logout</button>
                             <a class="nav-link text-dark  ms-lg-3">@User.Identity.Name</a>
                            
 
