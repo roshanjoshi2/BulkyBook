@@ -10,6 +10,8 @@ using NuGet.Versioning;
 using BulkyBook.Models;
 using Bulkybook.DataAcess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace BulkyBook.Web.Areas.Admin.Controllers
 {
@@ -72,17 +74,31 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Register(Register register)
         {
-            
-            _unitOfWork.Register.Add(register);
-            _unitOfWork.Save();
-            return RedirectToAction("PerformLogin", "Register");
+            if (ModelState.IsValid)
+            {
+                register.Password = HashPassword(register.Password);
 
+                _unitOfWork.Register.Add(register);
+                _unitOfWork.Save();
+                return RedirectToAction("PerformLogin", "Register");
+            }
+
+            return View("PerformLogin", "Register");
         }
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("PerformLogin","Register");
         }
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
+        }
+
 
 
 

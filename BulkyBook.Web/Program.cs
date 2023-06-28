@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
@@ -22,6 +22,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                    options.SlidingExpiration = true;
                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
                });
+
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
     builder.AllowAnyOrigin()
@@ -64,7 +65,7 @@ app.UseEndpoints(endpoints =>
         pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 
-   
+
 });
 
 app.Run();
