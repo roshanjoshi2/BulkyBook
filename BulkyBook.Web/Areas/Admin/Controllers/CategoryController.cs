@@ -6,6 +6,7 @@ using Bulkybook.DataAcess.Repository;
 using Bulkybook.DataAcess.Repository.IRepository;
 using BulkyBook.DataAcess;
 using BulkyBook.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyBook.Web.Areas.Admin.Controllers
@@ -17,12 +18,13 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        [Authorize]
         public IActionResult Index()
         {
             IEnumerable<Category> categorylist = _unitOfWork.Category.GetAll();
             return View(categorylist);
         }
-
+        [Authorize]
         //GET
         public IActionResult Create()
         {
@@ -45,7 +47,7 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             return View(category);
 
         }
-
+        [Authorize]
         //GET
         public IActionResult Edit(int? id)
         {
@@ -71,7 +73,7 @@ namespace BulkyBook.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize]
         //get
         public IActionResult Delete(int id)
         {

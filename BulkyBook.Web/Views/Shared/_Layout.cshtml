@@ -67,9 +67,29 @@
                             </div>
                         </li>
                     </ul>
+                   
+                 
+
+
                     <form class="d-flex">
-                        <input class="form-control me-sm-2" type="search" placeholder="Search">
-                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                        
+                      
+                        @if(User.Identity!=null && User.Identity.IsAuthenticated)
+                        {
+                            <button class="btn btn-secondary my-2 my-sm-0" asp-area="Admin" asp-action="Logout" asp-controller="Login">Logout</button>
+                            <a class="nav-link text-dark  ms-lg-3">@User.Identity.Name</a>
+                           
+
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary my-2 my-sm-0" asp-area="Admin" asp-action="PerformLogin" asp-controller="Register">Login</button>
+                            <button class="btn btn-secondary my-2 my-sm-0" asp-area="Admin" asp-action="Register" asp-controller="Register">Register</button>
+                            
+
+
+                        }
+
                     </form>
                 </div>
             </div>
